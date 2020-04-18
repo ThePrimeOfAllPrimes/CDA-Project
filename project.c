@@ -40,8 +40,15 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 /* 10 Points */
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-
+    //Halt if not word aligned
+    if (PC % 4 !=0)
+        return 1;
+    //Get intended instruction from Mem and write to instruction
+    *instruction = Mem[PC >>2];
+    return 0;
 }
+
+
 
 
 /* instruction partition */
@@ -137,14 +144,48 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
+    //If MemWrite is 1, write value of data 2 to ALUresult
+    if (MemWrite == 1] {
+        if (ALUresult % 4 == 0) //Check word alignment
+            Mem[ALUresult >> 2] = data2;
+    else
+        return 1;
+    }
+    
+    if (MemRead == 1) {
+        if (ALUresult % 4 == 0)
+            *memdata = Mem[ALUresult >> 2];
+    else
+        return 1;
+    }
+    
 
 }
+
+  
+
 
 
 /* Write Register */
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
+    if (RegWrite == 1) {
+        if (MemtoReg == 1) {
+            if (RegDst == 1) {
+                Reg[r3] = memdata;  //writing memdata to rd
+            else
+                Reg[r2] = memdata; //writing memdata to rt
+            }
+        else
+            if (RegDst == 1)
+                Reg [r3] = ALUresult; //writing ALUresult to rd
+            else
+                Reg [r2] = ALUresult; //Writing ALUresult to rt
+            
+        }
+    }
+    
 
 }
 
